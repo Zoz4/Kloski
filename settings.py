@@ -13,14 +13,14 @@ class Settings():
         self.shape = 3
         self.db_size = 100
         # 数字棋盘外白边的距离
-        self.margin = 10
+        self.margin = 50
         # 数字方块间的间隔
         self.db_spacing = 10
         # 数字方块内数字内嵌的位置
         self.db_padding = 20
         # 屏幕大小
-        self.screen_width = self.shape*(self.db_size+self.db_spacing)+self.margin
-        self.screen_height = self.shape*(self.db_size+self.db_spacing)+self.margin
+        self.screen_width = self.shape*(self.db_size+self.db_spacing)+self.db_spacing+2*self.margin
+        self.screen_height = self.shape*(self.db_size+self.db_spacing)+self.db_spacing
 
 
 

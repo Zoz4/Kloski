@@ -20,11 +20,12 @@ def run_game():
     # 开始游戏的主循环
     while True:
         # 监听键盘和鼠标事件
-        gf.check_events()
+        gf.check_events(blocks)
         # 设置背景颜色
         screen.fill(ai_settings.bg_color)
         # 让最近绘制的屏幕可见
         blocks.blitme()
+        blocks.win()
         pygame.display.flip()
 
         fclock.tick(ai_settings.fps)

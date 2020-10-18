@@ -1,7 +1,4 @@
-import os
 import pygame
-import random
-from PIL import Image
 
 import game_functions as gf
 from button import Button
@@ -28,52 +25,6 @@ description = """
 """
 print(description)
 
-UPPER = 20
-TOTAL = 35
-
-src_path = './resources/images'
-dst_path = './resources/puzzle'
-
-
-def prepare(src, dst):
-    def generate_step():
-        return random.randint(0, UPPER)
-
-    def select_block():
-        return random.randint(1, 9)
-
-    def generate_swap():
-        a = select_block()
-        while True:
-            b = select_block()
-            if b != a:
-                return [a, b]
-
-    def select_image(root):
-        images = os.listdir(root)
-        img = images[random.randint(0, TOTAL - 1)]
-        path = os.path.join(root, img)
-        return Image.open(path)
-
-    def cut_and_save(img, root):
-        w, _ = img.size
-        sub_w = w // 3
-
-        blank = select_block()
-
-        for i in range(3):
-            for j in range(3):
-                idx = 3 * i + j + 1
-                box = (j * sub_w, i * sub_w, (j + 1) * sub_w, (i + 1) * sub_w)
-                img.crop(box).save(''.join([root, '/{}.png'.format(idx)]))
-
-        return blank
-
-    image = select_image(src)
-    index = cut_and_save(image, dst)
-
-    return [generate_step(), generate_swap(), index]
-
 
 def run_game():
     # 初始化游戏并创建一个屏幕对象
@@ -90,22 +41,26 @@ def run_game():
     pygame.display.set_caption("Kloski")
 
     fclock = pygame.time.Clock()
-    play_button = Button(ai_settings, screen, "Play")
-    reset_button = Button(ai_settings, screen, "Reset")
-    reset_button.set_button_lower_right()
+    play_button = Button(ai_settings, screen, "Play", **ai_settings.play_button)
+    reset_button = Button(ai_settings, screen, "Reset", **ai_settings.reset_button)
+    new_button = Button(ai_settings, screen, "New", **ai_settings.new_button)
+
     # 开始游戏的主循环
     while True:
         # 监听键盘和鼠标事件
-        gf.check_events(stats, blocks, play_button, reset_button, timepiece, step_record)
+        gf.check_events(stats, blocks,
+                        play_button, reset_button, new_button,
+                        timepiece, step_record)
         if stats.game_active:
             if gf.check_win(blocks):
                 stats.game_active = False
                 gf.check_min_time(stats, timepiece)
 
-        gf.update_screen(ai_settings, screen, stats, blocks, play_button, reset_button, timepiece, step_record)
+        gf.update_screen(ai_settings, screen, stats, blocks,
+                         play_button, [reset_button, new_button],
+                         timepiece, step_record)
         fclock.tick(ai_settings.fps)
 
 
 if __name__ == '__main__':
-    prepare(src_path, dst_path)
     run_game()

@@ -1,5 +1,6 @@
 import pygame
 import random
+import os
 import numpy as np
 
 img_path = './resources/puzzle'
@@ -15,16 +16,21 @@ class DigitalBlocks:
         self.goal = self.status[:]
         self.null_digit_no = ai_settings.shape**2
         self.status_matrix = np.array(self.status).reshape((ai_settings.shape, ai_settings.shape))
+        self.status_cache = None
 
     def blitme(self):
         """在指定位置加载图片方块"""
         for i in range(self.ai_settings.shape):
             for j in range(self.ai_settings.shape):
-                digit = self.status_matrix[i][j]
-
                 x = self.ai_settings.db_spacing * (j + 1) + j * self.ai_settings.db_size + self.ai_settings.margin
                 y = self.ai_settings.db_spacing * (i + 1) + i * self.ai_settings.db_size + self.ai_settings.margin
 
+                if len(os.listdir(img_path)) == 1:
+                    color = pygame.Color(self.ai_settings.wb_color)
+                    pygame.draw.rect(self.screen, color, (x, y, self.ai_settings.db_size, self.ai_settings.db_size))
+                    continue
+
+                digit = self.status_matrix[i][j]
                 if digit == 0:
                     color = pygame.Color(self.ai_settings.wb_color)
                     pygame.draw.rect(self.screen, color, (x, y, self.ai_settings.db_size, self.ai_settings.db_size))
@@ -55,6 +61,7 @@ class DigitalBlocks:
             self.null_digit_no = n_no
 
             return True
+
     def break_order(self):
         cnt = 0
         operations = ['w', 's', 'a', 'd']
@@ -62,3 +69,7 @@ class DigitalBlocks:
             operation = random.choice(operations)
             self.move(operation)
             cnt += 1
+        self.status_cache = self.status_matrix.copy()
+
+    def reset_stats(self):
+        self.status_matrix = self.status_cache.copy()

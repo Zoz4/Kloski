@@ -3,7 +3,7 @@ class Settings():
     def __init__(self):
         """ 初始化游戏设置 """
 
-        self.fps = 120
+        self.fps = 300
         # 背景颜色
         self.bg_color = (230,230,230)
         # 数字方块颜色

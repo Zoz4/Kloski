@@ -4,7 +4,7 @@ import pygame
 COUNT_TIME = pygame.USEREVENT + 1
 pygame.time.set_timer(COUNT_TIME, 1000)
 
-def check_events(stats, blocks, play_button, timepiece):
+def check_events(stats, blocks, play_button, reset_button, timepiece):
     '''响应按键和鼠标事件'''
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -14,7 +14,8 @@ def check_events(stats, blocks, play_button, timepiece):
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             check_play_button(stats, blocks, play_button, mouse_x, mouse_y)
-        if event.type == COUNT_TIME and stats.game_active:
+            check_reset_button(stats, blocks, reset_button, timepiece, mouse_x, mouse_y)
+        elif event.type == COUNT_TIME and stats.game_active:
             stats.time += 1
             timepiece.prep_time()
 
@@ -40,23 +41,32 @@ def check_play_button(stats, blocks, play_button, mouse_x, mouse_y):
         stats.reset_stats()
         blocks.break_order()
         stats.game_active = True
+def check_reset_button(stats, blocks, reset_button, timepiece, mouse_x, mouse_y):
+    button_clicked = reset_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and stats.game_active:
+        blocks.break_order()
+        stats.reset_stats()
+        timepiece.prep_time()
+
 
 def check_min_time(stats, timepiece):
     '''检查是否产生了新的最少用时'''
     if stats.time < stats.min_time:
         stats.min_time = stats.time
         timepiece.prep_min_time()
-def update_screen(ai_settings, screen, stats, blocks, play_button, timepiece):
+def update_screen(ai_settings, screen, stats, blocks, play_button, reset_button, timepiece):
     '''更新屏幕上的图像，并切换到新图像'''
     # 设置背景颜色
     screen.fill(ai_settings.bg_color)
     # 绘制数字方块
     blocks.blitme()
     # 显示计时
-    timepiece.show_time()
     # 如果游戏处于非活动状态,就绘制Play按钮
     if not stats.game_active:
         play_button.draw_button()
+    else:
+        reset_button.draw_button()
+    timepiece.show_time()
     # 让最近绘制的屏幕可见
     pygame.display.flip()
 

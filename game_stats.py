@@ -6,6 +6,7 @@ class GameStats:
         self.ai_settings = ai_settings
         self.min_time = float('inf')
         self.game_active = False
+        self.game_show_guide = False
         self.time = 0
         self.step = 0
 

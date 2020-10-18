@@ -71,5 +71,13 @@ class DigitalBlocks:
             cnt += 1
         self.status_cache = self.status_matrix.copy()
 
+    def ans(self):
+        with open(self.ai_settings.ansfile_path,'r') as json_file:
+            ans_dict = json.load(json_file)
+        status_str = ''
+        for i in self.status:
+            status_str += str(i)
+
+        return ans_dict[status_str][::-1]
     def reset_stats(self):
         self.status_matrix = self.status_cache.copy()

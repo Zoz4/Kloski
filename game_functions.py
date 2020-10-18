@@ -102,6 +102,8 @@ def update_screen(ai_settings, screen, stats, blocks, play_button, reset_button,
     # 如果游戏处于非活动状态,就绘制Play按钮
     if not stats.game_active:
         play_button.draw_button()
+        timepiece.show_time()
+        step_record.show_step()
     else:
         if not stats.game_show_guide:
             reset_button.draw_button()

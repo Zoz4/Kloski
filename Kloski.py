@@ -44,12 +44,12 @@ def run_game():
     play_button = Button(ai_settings, screen, "Play", **ai_settings.play_button)
     reset_button = Button(ai_settings, screen, "Reset", **ai_settings.reset_button)
     new_button = Button(ai_settings, screen, "New", **ai_settings.new_button)
-    guide_button = Button(ai_settings, screen, "Guide")
-    # TODO(Tomspiano): add guide_button
+    guide_button = Button(ai_settings, screen, "Guide", **ai_settings.guide_button)
+
     # 开始游戏的主循环
     while True:
         # 监听键盘和鼠标事件
-        gf.check_events(ai_settings,screen,stats, blocks,
+        gf.check_events(ai_settings, screen, stats, blocks,
                         play_button, reset_button, new_button, guide_button,
                         timepiece, step_record)
         if stats.game_active:

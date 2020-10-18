@@ -5,6 +5,7 @@ import sys
 import pygame
 import numpy as np
 import time
+
 COUNT_TIME = pygame.USEREVENT + 1
 pygame.time.set_timer(COUNT_TIME, 1000)
 
@@ -60,7 +61,9 @@ def clear_cache():
         os.remove(path)
 
 
-def check_events(stats, blocks, play_button, reset_button, new_button, timepiece, step_record):
+def check_events(ai_settings, screen, stats, blocks,
+                 play_button, reset_button, new_button, guide_button,
+                 timepiece, step_record):
     """响应按键和鼠标事件"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT or \
@@ -77,7 +80,7 @@ def check_events(stats, blocks, play_button, reset_button, new_button, timepiece
             check_reset_button(stats, blocks, reset_button, timepiece, step_record, mouse_x, mouse_y)
             check_new_button(stats, blocks, new_button, timepiece, step_record, mouse_x, mouse_y)
             check_guide_button(ai_settings, screen, stats, blocks,
-                               play_button, reset_button, guide_button,
+                               play_button, [reset_button, new_button], guide_button,
                                timepiece, step_record, mouse_x, mouse_y)
         elif event.type == COUNT_TIME and stats.game_active:
             stats.time += 1
@@ -137,8 +140,9 @@ def check_new_button(stats, blocks, new_button, timepiece, step_record, mouse_x,
         timepiece.prep_time()
         step_record.prep_step()
 
+
 def check_guide_button(ai_settings, screen, stats, blocks,
-                       play_button, reset_button, guide_button,
+                       play_button, menu_buttons, guide_button,
                        timepiece, step_record, mouse_x, mouse_y):
     button_clicked = guide_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and stats.game_active:
@@ -147,10 +151,12 @@ def check_guide_button(ai_settings, screen, stats, blocks,
         cur_status_matrix = np.copy(blocks.status_matrix)
         cur_null_digit_no = blocks.null_digit_no
         cur_status = blocks.status[:]
+
+        menu_buttons.append(guide_button)
         for op in ans:
             blocks.move(op)
             update_screen(ai_settings, screen, stats, blocks,
-                          play_button, reset_button, guide_button,
+                          play_button, menu_buttons,
                           timepiece, step_record)
             time.sleep(0.5)
 
@@ -160,7 +166,7 @@ def check_guide_button(ai_settings, screen, stats, blocks,
         time.sleep(1)
         stats.game_show_guide = False
         update_screen(ai_settings, screen, stats, blocks,
-                      play_button, reset_button, guide_button,
+                      play_button, menu_buttons,
                       timepiece, step_record)
 
 

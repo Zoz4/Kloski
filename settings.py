@@ -36,6 +36,7 @@ class Settings:
         self.play_button = {'center': 'center'}
         self.reset_button = {'bottom': ('bottom', '-10'), 'right': ('right', '-10')}
         self.new_button = {'bottom': ('bottom', '-10'), 'right': ('right', str(-10 - self.bt_width - self.bt_spacing))}
+        self.guide_button = {'bottom': ('bottom', '-10'), 'left': ('left', '+10')}
 
         # 答案文件路径
         self.ans_file_path = './game_data/123456780.json'

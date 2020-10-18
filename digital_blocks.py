@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+import json
 import numpy as np
 
 img_path = './resources/puzzle'
@@ -72,12 +73,13 @@ class DigitalBlocks:
         self.status_cache = self.status_matrix.copy()
 
     def ans(self):
-        with open(self.ai_settings.ansfile_path,'r') as json_file:
+        with open(self.ai_settings.ans_file_path, 'r') as json_file:
             ans_dict = json.load(json_file)
         status_str = ''
         for i in self.status:
             status_str += str(i)
 
         return ans_dict[status_str][::-1]
+
     def reset_stats(self):
         self.status_matrix = self.status_cache.copy()

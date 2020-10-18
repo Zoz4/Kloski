@@ -46,12 +46,3 @@ class Button:
             pos2 = ''.join(['self.screen_rect.', kwargs[kw][0]])
             p = compile(''.join([pos1, '=', pos2, kwargs[kw][1]]), '', 'exec')
             exec(p)
-
-    # TODO(Tomspiano): add AI button
-    '''
-    def set_button_lower_left(self):
-        """将按钮位置和字体设置为左下"""
-        self.rect.bottom = self.screen_rect.bottom - 10
-        self.rect.left = self.screen_rect.left + 10
-        self.msg_image_rect.center = self.rect.center
-    '''

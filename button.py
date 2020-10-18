@@ -37,6 +37,7 @@ class Button():
         self.rect.right = self.screen_rect.right -10
         self.msg_image_rect.center = self.rect.center
     def set_button_lower_left(self):
-        '''将按钮位置和字体设置为坐下'''
+        '''将按钮位置和字体设置为左下'''
+        self.rect.bottom = self.screen_rect.bottom - 10
         self.rect.left = self.screen_rect.left + 10
         self.msg_image_rect.center = self.rect.center

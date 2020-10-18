@@ -23,17 +23,18 @@ def run_game():
     
     fclock = pygame.time.Clock()
     play_button = Button(ai_settings, screen, "Play")
-
+    reset_button = Button(ai_settings, screen, "Reset")
+    reset_button.set_button_lower_right()
     # 开始游戏的主循环
     while True:
         # 监听键盘和鼠标事件
-        gf.check_events(stats, blocks, play_button, timepiece)
+        gf.check_events(stats, blocks, play_button, reset_button, timepiece)
         if stats.game_active:
             if(gf.check_win(blocks)):
                 stats.game_active = False
                 gf.check_min_time(stats, timepiece)
 
-        gf.update_screen(ai_settings, screen, stats, blocks, play_button, timepiece)
+        gf.update_screen(ai_settings, screen, stats, blocks, play_button, reset_button, timepiece)
         fclock.tick(ai_settings.fps)
 
 if __name__ == '__main__':

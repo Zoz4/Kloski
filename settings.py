@@ -2,6 +2,7 @@ class Settings():
     """ 储存Kloski的所有设置的类 """
     def __init__(self):
         """ 初始化游戏设置 """
+
         self.fps = 120
         # 背景颜色
         self.bg_color = (230,230,230)
@@ -13,7 +14,7 @@ class Settings():
         self.shape = 3
         self.db_size = 200
         # 数字棋盘外白边的距离
-        self.margin = 100
+        self.margin = 50
         # 数字方块间的间隔
         self.db_spacing = 20
         # 数字方块内数字内嵌的位置

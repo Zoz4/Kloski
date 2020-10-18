@@ -1,9 +1,28 @@
 import pygame
 import random
 import os
+import json
 import numpy as np
 
 img_path = './resources/puzzle'
+
+UPPER = 20
+
+
+def generate_step():
+    return random.randint(0, UPPER)
+
+
+def select_block():
+    return random.randint(1, 9)
+
+
+def generate_swap():
+    a = select_block()
+    while True:
+        b = select_block()
+        if b != a:
+            return [a, b]
 
 
 class DigitalBlocks:
@@ -11,12 +30,23 @@ class DigitalBlocks:
         """初始化图片方块并设置其初始位置"""
         self.ai_settings = ai_settings
         self.screen = screen
+
         self.status = list(range(1, ai_settings.shape**2 + 1))
         self.status[ai_settings.shape**2 - 1] = 0
-        self.goal = self.status[:]
-        self.null_digit_no = ai_settings.shape**2
-        self.status_matrix = np.array(self.status).reshape((ai_settings.shape, ai_settings.shape))
         self.status_cache = None
+
+        self.goal = self.status[:]
+
+        self.null_digit_no = ai_settings.shape**2
+        self.null_digit_no_cache = None
+
+        self.status_matrix = np.array(self.status).reshape((ai_settings.shape, ai_settings.shape))
+        self.status_matrix_cache = None
+
+        self.step = generate_step()
+        self.swap = generate_swap()
+        # print(self.step)
+        # print(self.swap)
 
     def blitme(self):
         """在指定位置加载图片方块"""
@@ -62,6 +92,23 @@ class DigitalBlocks:
 
             return True
 
+    def swap_blocks(self):
+        a, b = self.swap
+        if self.null_digit_no == a:
+            self.null_digit_no = b
+        elif self.null_digit_no == b:
+            self.null_digit_no = a
+
+        a -= 1
+        b -= 1
+
+        self.status_matrix[a // self.ai_settings.shape][a % self.ai_settings.shape], \
+        self.status_matrix[b // self.ai_settings.shape][b % self.ai_settings.shape] = \
+            self.status_matrix[b // self.ai_settings.shape][b % self.ai_settings.shape], \
+            self.status_matrix[a // self.ai_settings.shape][a % self.ai_settings.shape]
+
+        self.status[a], self.status[b] = self.status[b], self.status[a]
+
     def break_order(self):
         cnt = 0
         operations = ['w', 's', 'a', 'd']
@@ -69,7 +116,20 @@ class DigitalBlocks:
             operation = random.choice(operations)
             self.move(operation)
             cnt += 1
-        self.status_cache = self.status_matrix.copy()
+        self.status_cache = self.status[:]
+        self.null_digit_no_cache = self.null_digit_no
+        self.status_matrix_cache = self.status_matrix.copy()
+
+    def ans(self):
+        with open(self.ai_settings.ans_file_path, 'r') as json_file:
+            ans_dict = json.load(json_file)
+        status_str = ''
+        for i in self.status:
+            status_str += str(i)
+
+        return ans_dict[status_str][::-1]
 
     def reset_stats(self):
-        self.status_matrix = self.status_cache.copy()
+        self.status = self.status_cache[:]
+        self.null_digit_no = self.null_digit_no_cache
+        self.status_matrix = self.status_matrix_cache.copy()

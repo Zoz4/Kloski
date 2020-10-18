@@ -44,12 +44,13 @@ def run_game():
     play_button = Button(ai_settings, screen, "Play", **ai_settings.play_button)
     reset_button = Button(ai_settings, screen, "Reset", **ai_settings.reset_button)
     new_button = Button(ai_settings, screen, "New", **ai_settings.new_button)
+    guide_button = Button(ai_settings, screen, "Guide", **ai_settings.guide_button)
 
     # 开始游戏的主循环
     while True:
         # 监听键盘和鼠标事件
-        gf.check_events(stats, blocks,
-                        play_button, reset_button, new_button,
+        gf.check_events(ai_settings, screen, stats, blocks,
+                        play_button, reset_button, new_button, guide_button,
                         timepiece, step_record)
         if stats.game_active:
             if gf.check_win(blocks):
@@ -57,7 +58,7 @@ def run_game():
                 gf.check_min_time(stats, timepiece)
 
         gf.update_screen(ai_settings, screen, stats, blocks,
-                         play_button, [reset_button, new_button],
+                         play_button, [reset_button, new_button, guide_button],
                          timepiece, step_record)
         fclock.tick(ai_settings.fps)
 

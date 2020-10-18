@@ -11,16 +11,18 @@ class Settings():
         self.wb_color = '#98AABD'
         # 数字棋盘的形状和数字方块的大小
         self.shape = 3
-        self.db_size = 100
+        self.db_size = 200
         # 数字棋盘外白边的距离
-        self.margin = 50
+        self.margin = 100
         # 数字方块间的间隔
-        self.db_spacing = 10
+        self.db_spacing = 20
         # 数字方块内数字内嵌的位置
-        self.db_padding = 20
+        self.db_padding = 40
         # 屏幕大小
         self.screen_width = self.shape*(self.db_size+self.db_spacing)+self.db_spacing+2*self.margin
-        self.screen_height = self.shape*(self.db_size+self.db_spacing)+self.db_spacing
+        self.screen_height = self.shape*(self.db_size+self.db_spacing)+self.db_spacing+2*self.margin
+        # 答案文件路径
+        self.ansfile_path = './game_data/123456780.json'
 
 
 

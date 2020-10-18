@@ -44,7 +44,7 @@ class DigitalBlocks:
         nx = x + _next[op][0]
         ny = y + _next[op][1]
         if nx < 0 or ny < 0 or nx > self.ai_settings.shape - 1 or ny > self.ai_settings.shape - 1:
-            return
+            return False
         else:
             n_no = location.index([nx, ny])
             self.status_matrix[x][y], self.status_matrix[nx][ny] = \
@@ -54,6 +54,7 @@ class DigitalBlocks:
                 self.status[n_no - 1], self.status[self.null_digit_no - 1]
             self.null_digit_no = n_no
 
+            return True
     def break_order(self):
         cnt = 0
         operations = ['w', 's', 'a', 'd']

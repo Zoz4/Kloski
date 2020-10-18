@@ -8,7 +8,7 @@ class Button:
         self.screen_rect = screen.get_rect()
 
         # 设置按钮的尺寸和其他属性值
-        self.width, self.height = 200, 50
+        self.width, self.height = 150, 50
         self.button_color = (123, 139, 111)
         self.text_color = (255, 255, 255)
         self.font = pygame.font.SysFont(None, 48)
@@ -27,3 +27,9 @@ class Button:
         """绘制一个用颜色填充的按钮，再绘制文本"""
         self.screen.fill(self.button_color, self.rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)
+
+    def set_button_lower_right(self):
+        '''将按钮位置和字体设置为右下'''
+        self.rect.bottom = self.screen_rect.bottom-10
+        self.rect.right = self.screen_rect.right -10
+        self.msg_image_rect.center = self.rect.center

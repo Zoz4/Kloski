@@ -5,8 +5,11 @@ class GameStats:
         """初始化统计信息"""
         self.ai_settings = ai_settings
         self.reset_stats()
+        self.min_time = float('inf')
         self.game_active = False
 
     def reset_stats(self):
-        """初始化在游戏运行期间可能变化的统计信息"""
-        return
+        '''初始化在游戏运行期间可能变化的统计信息'''
+        self.time = 0
+        self.step = 0
+

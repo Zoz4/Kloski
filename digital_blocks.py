@@ -56,12 +56,22 @@ class DigitalBlocks():
             self.null_digit_no = n_no
             return True
     def break_order(self):
-            cnt = 0
-            operations = ['w', 's', 'a', 'd']
-            while(cnt < 100):
-                operation = random.choice(operations)
-                self.move(operation)
-                cnt += 1
+        cnt = 0
+        operations = ['w', 's', 'a', 'd']
+        while(cnt < 100):
+            operation = random.choice(operations)
+            self.move(operation)
+            cnt += 1
+    def ans(self):
+        with open(self.ai_settings.ansfile_path,'r') as json_file:
+            ans_dict = json.load(json_file)
+        status_str = ''
+        for i in self.status:
+            status_str += str(i)
+
+        return ans_dict[status_str][::-1]
+
+
 
 
 

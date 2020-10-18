@@ -1,6 +1,7 @@
 import pygame
 import random
 import numpy as np
+import json
 
 class DigitalBlocks():
     def __init__(self, ai_settings, screen):
@@ -14,6 +15,7 @@ class DigitalBlocks():
         self.status_matrix = np.array(self.status).reshape((ai_settings.shape, ai_settings.shape))
 
     def blitme(self):
+        '''在指定位置绘制数字方块'''
         for i in range(self.ai_settings.shape):
             for j in range(self.ai_settings.shape):
                 digit = self.status_matrix[i][j]
@@ -22,8 +24,8 @@ class DigitalBlocks():
                 else:
                     color = pygame.Color(self.ai_settings.wb_color)
 
-                x = self.ai_settings.db_spacing*(j+1)+j*self.ai_settings.db_size
-                y = self.ai_settings.db_spacing*(i+1)+i*self.ai_settings.db_size
+                x = self.ai_settings.db_spacing*(j+1)+j*self.ai_settings.db_size+self.ai_settings.margin
+                y = self.ai_settings.db_spacing*(i+1)+i*self.ai_settings.db_size+self.ai_settings.margin
                 pygame.draw.rect(self.screen, color, (x, y, self.ai_settings.db_size, self.ai_settings.db_size))
                 if (digit != 0):
                     front_size = self.ai_settings.db_size - self.ai_settings.db_padding
@@ -33,12 +35,16 @@ class DigitalBlocks():
                     (x+(self.ai_settings.db_size-font_width)/2, y + (self.ai_settings.db_size-font_height)/2))
 
     def move(self, op):
-        next = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-        location = [[-1, -1], [0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0],[2,1], [2, 2], [2, 2]]
+        '''移动数字方块'''
+        next = {'s':[-1, 0], 'w':[1, 0], 'd':[0, -1], 'a':[0, 1]}
+        location = [[-1, -1]]
+        for i in range(self.ai_settings.shape):
+            for j in range(self.ai_settings.shape):
+                location.append([i,j])
         x,y = location[self.null_digit_no]
         nx = x+next[op][0]
         ny = y+next[op][1]
-        if(nx < 0 or ny < 0 or nx > 2 or ny >2 ):
+        if(nx < 0 or ny < 0 or nx > self.ai_settings.shape-1 or ny >self.ai_settings.shape-1 ):
             return
         else:
             n_no = location.index([nx,ny])
@@ -48,10 +54,16 @@ class DigitalBlocks():
             self.status[self.null_digit_no-1], self.status[n_no-1] = \
             self.status[n_no-1], self.status[self.null_digit_no-1]
             self.null_digit_no = n_no
+    def break_order(self):
+            cnt = 0
+            operations = ['w', 's', 'a', 'd']
+            while(cnt < 100):
+                operation = random.choice(operations)
+                self.move(operation)
+                cnt += 1
 
-    def win(self):
-        if (self.status == self.goal):
-            return True
+
+
 
 
 

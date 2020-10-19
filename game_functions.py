@@ -76,8 +76,8 @@ def check_keydown_event(stats, event, blocks):
 
     def check_swap(stats):
         stats.step += 1
-        if stats.step == blocks.step:
-            blocks.swap_blocks()
+#        if stats.step == blocks.step:
+#            blocks.swap_blocks()
 
     if event.key == pygame.K_w:
         if blocks.move('w'):

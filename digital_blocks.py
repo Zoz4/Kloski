@@ -41,12 +41,14 @@ class DigitalBlocks:
         self.null_digit_no_cache = None
 
         self.status_matrix = np.array(self.status).reshape((ai_settings.shape, ai_settings.shape))
+
         self.status_matrix_cache = None
 
         self.step = generate_step()
         self.swap = generate_swap()
         # print(self.step)
         # print(self.swap)
+
 
     def blitme(self):
         """在指定位置加载图片方块"""
@@ -116,9 +118,11 @@ class DigitalBlocks:
             operation = random.choice(operations)
             self.move(operation)
             cnt += 1
+
         self.status_cache = self.status[:]
         self.null_digit_no_cache = self.null_digit_no
         self.status_matrix_cache = self.status_matrix.copy()
+
 
     def ans(self):
         with open(self.ai_settings.ans_file_path, 'r') as json_file:
@@ -130,6 +134,8 @@ class DigitalBlocks:
         return ans_dict[status_str][::-1]
 
     def reset_stats(self):
+
         self.status = self.status_cache[:]
         self.null_digit_no = self.null_digit_no_cache
         self.status_matrix = self.status_matrix_cache.copy()
+

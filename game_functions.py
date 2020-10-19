@@ -9,27 +9,13 @@ import time
 COUNT_TIME = pygame.USEREVENT + 1
 pygame.time.set_timer(COUNT_TIME, 1000)
 
-UPPER = 20
-TOTAL = 35
-
 src_path = './resources/images'
 dst_path = './resources/puzzle'
 
+TOTAL = 35
+
 
 def prepare(src, dst):
-    def generate_step():
-        return random.randint(0, UPPER)
-
-    def select_block():
-        return random.randint(1, 9)
-
-    def generate_swap():
-        a = select_block()
-        while True:
-            b = select_block()
-            if b != a:
-                return [a, b]
-
     def select_image(root):
         images = os.listdir(root)
         img = images[random.randint(0, TOTAL - 1)]
@@ -48,8 +34,6 @@ def prepare(src, dst):
 
     image = select_image(src)
     cut_and_save(image, dst)
-
-    return [generate_step(), generate_swap()]
 
 
 def clear_cache():
@@ -89,18 +73,24 @@ def check_events(ai_settings, screen, stats, blocks,
 
 def check_keydown_event(stats, event, blocks):
     """响应按键"""
+
+    def check_swap(stats):
+        stats.step += 1
+#        if stats.step == blocks.step:
+#            blocks.swap_blocks()
+
     if event.key == pygame.K_w:
         if blocks.move('w'):
-            stats.step += 1
+            check_swap(stats)
     elif event.key == pygame.K_s:
         if blocks.move('s'):
-            stats.step += 1
+            check_swap(stats)
     elif event.key == pygame.K_a:
         if blocks.move('a'):
-            stats.step += 1
+            check_swap(stats)
     elif event.key == pygame.K_d:
         if blocks.move('d'):
-            stats.step += 1
+            check_swap(stats)
 
 
 def check_win(blocks):

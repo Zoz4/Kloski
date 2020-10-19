@@ -17,6 +17,7 @@ class DigitalBlocks:
         self.goal = self.status[:]
         self.null_digit_no = ai_settings.shape**2
         self.status_matrix = np.array(self.status).reshape((ai_settings.shape, ai_settings.shape))
+        self.null_digit_no_cache = None
         self.status_cache = None
 
     def blitme(self):
@@ -70,7 +71,8 @@ class DigitalBlocks:
             operation = random.choice(operations)
             self.move(operation)
             cnt += 1
-        self.status_cache = self.status_matrix.copy()
+        self.status_cache = np.copy(self.status_matrix)
+        self.null_digit_no_cache = self.null_digit_no
 
     def ans(self):
         with open(self.ai_settings.ans_file_path, 'r') as json_file:
@@ -82,4 +84,5 @@ class DigitalBlocks:
         return ans_dict[status_str][::-1]
 
     def reset_stats(self):
-        self.status_matrix = self.status_cache.copy()
+        self.status_matrix = np.copy(self.status_cache)
+        self.null_digit_no = self.null_digit_no_cache

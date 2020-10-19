@@ -14,7 +14,7 @@ class Settings:
 
         # 数字棋盘的形状和数字方块的大小
         self.shape = 3
-        self.db_size = 200
+        self.db_size = 150
         # 数字棋盘外白边的距离
         self.margin = 50
 

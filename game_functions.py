@@ -63,9 +63,10 @@ def check_events(ai_settings, screen, stats, blocks,
             check_play_button(stats, blocks, play_button, timepiece, step_record, mouse_x, mouse_y)
             check_reset_button(stats, blocks, reset_button, timepiece, step_record, mouse_x, mouse_y)
             check_new_button(stats, blocks, new_button, timepiece, step_record, mouse_x, mouse_y)
-            check_guide_button(ai_settings, screen, stats, blocks,
+            if check_guide_button(ai_settings, screen, stats, blocks,
                                play_button, [reset_button, new_button], guide_button,
-                               timepiece, step_record, mouse_x, mouse_y)
+                               timepiece, step_record, mouse_x, mouse_y):
+                pygame.event.clear()
         elif event.type == COUNT_TIME and stats.game_active:
             stats.time += 1
             timepiece.prep_time()
@@ -158,6 +159,9 @@ def check_guide_button(ai_settings, screen, stats, blocks,
         update_screen(ai_settings, screen, stats, blocks,
                       play_button, menu_buttons,
                       timepiece, step_record)
+        return True
+    return False
+
 
 
 def check_min_time(stats, timepiece):

@@ -63,9 +63,10 @@ def check_events(ai_settings, screen, stats, blocks,
             check_play_button(stats, blocks, play_button, timepiece, step_record, mouse_x, mouse_y)
             check_reset_button(stats, blocks, reset_button, timepiece, step_record, mouse_x, mouse_y)
             check_new_button(stats, blocks, new_button, timepiece, step_record, mouse_x, mouse_y)
-            check_guide_button(ai_settings, screen, stats, blocks,
+            if check_guide_button(ai_settings, screen, stats, blocks,
                                play_button, [reset_button, new_button], guide_button,
-                               timepiece, step_record, mouse_x, mouse_y)
+                               timepiece, step_record, mouse_x, mouse_y):
+                pygame.event.clear()
         elif event.type == COUNT_TIME and stats.game_active:
             stats.time += 1
             timepiece.prep_time()
@@ -144,6 +145,10 @@ def check_guide_button(ai_settings, screen, stats, blocks,
 
         menu_buttons.append(guide_button)
         for op in ans:
+            # pygame中必须在循环体中对pygame.event.get()做出响应，不然系统就会认为窗口没有响应，
+            # 鼠标就会一直转等待响应，而且点了以后，窗口会显示无响应。
+            # 防止Guide期间窗口卡死
+            pygame.event.get()
             blocks.move(op)
             update_screen(ai_settings, screen, stats, blocks,
                           play_button, menu_buttons,
@@ -158,6 +163,9 @@ def check_guide_button(ai_settings, screen, stats, blocks,
         update_screen(ai_settings, screen, stats, blocks,
                       play_button, menu_buttons,
                       timepiece, step_record)
+        return True
+    return False
+
 
 
 def check_min_time(stats, timepiece):

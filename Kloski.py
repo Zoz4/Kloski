@@ -36,7 +36,6 @@ def run_game():
     stats = GameStats(ai_settings)
     timepiece = Timepiece(ai_settings, screen, stats)
     step_record = StepRecord(ai_settings, screen, stats)
-
     blocks = DigitalBlocks(ai_settings, screen)
     pygame.display.set_caption("Kloski")
 

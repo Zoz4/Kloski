@@ -11,7 +11,7 @@ class StepRecord:
         self.stats = stats
         # 显示步数的字体设置
         self.text_color = (30, 30, 30)
-        self.font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.SysFont('arial', 30)
 
         # 准备初始记录步数对象
         self.step_image = None

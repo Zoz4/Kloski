@@ -9,10 +9,9 @@ class Timepiece:
         self.screen_rect = screen.get_rect()
         self.ai_settings = ai_settings
         self.stats = stats
-
         # 显示所有时间的字体设置
         self.text_color = (30, 30, 30)
-        self.font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.SysFont('arial', 30)
 
         # 准备初始计时图像
         self.time_image = None

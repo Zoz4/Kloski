@@ -145,6 +145,10 @@ def check_guide_button(ai_settings, screen, stats, blocks,
 
         menu_buttons.append(guide_button)
         for op in ans:
+            # pygame中必须在循环体中对pygame.event.get()做出响应，不然系统就会认为窗口没有响应，
+            # 鼠标就会一直转等待响应，而且点了以后，窗口会显示无响应。
+            # 防止Guide期间窗口卡死
+            pygame.event.get()
             blocks.move(op)
             update_screen(ai_settings, screen, stats, blocks,
                           play_button, menu_buttons,
